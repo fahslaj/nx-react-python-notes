@@ -22,6 +22,7 @@
     "@nx/vite": "20.3.2",
     "@nx/web": "20.3.2",
     "@nx/workspace": "20.3.2",
+    "@nxlv/python": "^20.3.4",
     "@playwright/test": "^1.36.0",
     "@react-native-community/cli": "~15.0.1",
     "@react-native-community/cli-platform-android": "~15.0.1",

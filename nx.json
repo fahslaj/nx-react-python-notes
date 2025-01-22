@@ -50,7 +50,8 @@
       "options": {
         "targetName": "e2e"
       }
-    }
+    },
+    { "plugin": "@nxlv/python" }
   ],
   "targetDefaults": {
     "e2e-ci--**/*": {
