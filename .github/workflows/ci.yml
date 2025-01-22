@@ -18,7 +18,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - run: apt install pipx
+      - run: sudo apt-get install pipx
       - run: pipx ensurepath
       - run: pipx install poetry
       - run: pipx install flask
