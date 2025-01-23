@@ -9,6 +9,7 @@
     "react": "*",
     "react-native": "*",
     "react-native-svg": "*",
+    "lucide-react": "*",
     "metro-config": "*"
   }
 }
