@@ -3,19 +3,30 @@ class NotesData:
     self.notes = [{
         "id": 1,
         "title": "Note 1",
-        "color": "#fef9c3"
+        "color": "yellow"
     }, {
         "id": 2,
         "title": "Note 2",
-        "color": "#bbf7d0"
+        "color": "green"
     }, {
         "id": 3,
         "title": "Note 3",
-        "color": "#bfdbfe"
+        "color": "blue"
     }]
+    self.nextId = len(self.notes) + 1
 
   def addNote(self, note):
-    self.notes.append(note)
+    newNote = {
+        "id": self.nextId,
+        "title": note["title"],
+        "color": note["color"]
+    }
+    self.notes.append(newNote)
+    self.nextId += 1
+    return newNote
   
   def getNotes(self):
     return self.notes
+  
+  def deleteNoteById(self, id):
+    self.notes = [note for note in self.notes if note["id"] != id]

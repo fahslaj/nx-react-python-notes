@@ -14,7 +14,7 @@
     "serve": {
       "executor": "@nxlv/python:run-commands",
       "options": {
-        "command": "flask --app notes_api/main --debug run -p 4201",
+        "command": "poetry run flask --app notes_api/main --debug run -p 4201",
         "cwd": "apps/notes-api"
       }
     },

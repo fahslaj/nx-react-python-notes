@@ -7,22 +7,6 @@ CORS(app, resources={r"/api/*": {"origins": "http://localhost:4200"}})
 
 notes = NotesData()
 
-notes = [
-    {
-        "id": 1,
-        "title": "Note 1",
-        "color": "#fef9c3"
-    }, {
-        "id": 2,
-        "title": "Note 2",
-        "color": "#bbf7d0"
-    }, {
-        "id": 3,
-        "title": "Note 3",
-        "color": "#bfdbfe"
-    }
-]
-
 @app.route("/api/notes", methods=["GET"])
 def getNotes():
     return jsonify(notes.getNotes())
@@ -31,12 +15,15 @@ def getNotes():
 def createNote():
     data = request.get_json()
     note = {
-        "id": len(notes.getNotes()) + 1,
         "title": data["title"],
         "color": data["color"]
     }
-    notes.addNote(note)
-    return jsonify(note)
+    return jsonify(notes.addNote(note))
+
+@app.route("/api/notes/<int:id>", methods=["DELETE"])
+def deleteNote(id):
+    notes.deleteNoteById(id)
+    return jsonify({"message": "Note deleted"})
 
 if __name__ == "__main__":
     app.run(debug=True)

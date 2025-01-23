@@ -3,13 +3,13 @@ import { X } from 'lucide-react';
 
 export interface NoteModel {
   id: string;
-  content: string;
+  title: string;
   color: string;
 }
 
 interface NoteProps {
   note: NoteModel;
-  onDelete: (id: string) => void;
+  onDelete: (id: string) => Promise<void>;
 }
 
 export function Note({ note, onDelete }: NoteProps) {
@@ -41,7 +41,7 @@ export function Note({ note, onDelete }: NoteProps) {
       <button onClick={() => onDelete(note.id)} style={styles.deleteButton}>
         <X size={20} />
       </button>
-      <p style={styles.noteContent}>{note.content}</p>
+      <p style={styles.noteContent}>{note.title}</p>
     </div>
   );
 }

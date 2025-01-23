@@ -12,16 +12,16 @@ export const App = () => {
 
   useEffect(() => {
     const fetchNotes = async () => {
-      // try {
-      //   const response = await fetch(API_URL);
-      //   if (!response.ok) {
-      //     throw new Error(`HTTP error! status: ${response.status}`);
-      //   }
-      //   const data = await response.json();
-      //   setNotes(data);
-      // } catch (err) {
-      //   console.error('Error fetching notes:', err);
-      // }
+      try {
+        const response = await fetch(API_URL);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setNotes(data);
+      } catch (err) {
+        console.error('Error fetching notes:', err);
+      }
     };
 
     fetchNotes();
@@ -30,34 +30,45 @@ export const App = () => {
   const addNote = async () => {
     if (newNoteContent.trim()) {
       const newNote: Partial<NoteModel> = {
-        content: newNoteContent,
+        title: newNoteContent,
         color: colorNames[Math.floor(Math.random() * colorNames.length)],
       };
-      // try {
-      //   const response = await fetch(API_URL, {
-      //     method: 'POST',
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //     body: JSON.stringify(newNote),
-      //   });
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newNote),
+        });
 
-      //   if (!response.ok) {
-      //     throw new Error(`HTTP error! status: ${response.status}`);
-      //   }
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
-      //   const createdNote: NoteModel = await response.json();
-      //   setNotes([...notes, createdNote]);
-      //   setNewNoteContent('');
-      // } catch (err) {
-      //   console.error('Error creating note:', err);
-      // }
-      setNotes([...notes, { id: notes.length, ...(newNote as NoteModel) }]);
+        const createdNote: NoteModel = await response.json();
+        setNotes([...notes, createdNote]);
+        setNewNoteContent('');
+      } catch (err) {
+        console.error('Error creating note:', err);
+      }
     }
   };
 
-  const deleteNote = (id: string) => {
-    setNotes(notes.filter((note) => note.id !== id));
+  const deleteNote = async (id: string) => {
+    try {
+      const response = await fetch(`${API_URL}/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      setNotes(notes.filter((note) => note.id !== id));
+    } catch (err) {
+      console.error('Error deleting note:', err);
+    }
   };
 
   return (
