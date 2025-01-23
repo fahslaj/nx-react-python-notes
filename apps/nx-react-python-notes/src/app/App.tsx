@@ -1,117 +1,27 @@
-import { Plus, X } from 'lucide-react';
-import React, { CSSProperties, useEffect, useState } from 'react';
+import { Note, NoteModel } from '@nx-react-python-notes/note';
+import { styles } from '@nx-react-python-notes/ui-shared';
+import { Plus } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 
 const API_URL = 'http://localhost:4201/api/notes';
 
-interface Note {
-  id: string;
-  content: string;
-  color: string;
-}
-
-const colors = {
-  yellow: '#fef9c3',
-  green: '#bbf7d0',
-  blue: '#bfdbfe',
-  pink: '#fbcfe8',
-  purple: '#e9d5ff',
-};
-
-const styles = {
-  container: {
-    minHeight: '100vh',
-    backgroundColor: '#f3f4f6',
-    padding: '2rem',
-  },
-  content: {
-    maxWidth: '72rem',
-    margin: '0 auto',
-  },
-  header: {
-    marginBottom: '2rem',
-  },
-  title: {
-    fontSize: '1.875rem',
-    fontWeight: 'bold',
-    color: '#1f2937',
-    marginBottom: '1rem',
-  },
-  inputGroup: {
-    display: 'flex',
-    gap: '0.5rem',
-  },
-  input: {
-    flex: 1,
-    padding: '0.75rem',
-    borderRadius: '0.5rem',
-    border: '1px solid #d1d5db',
-    outline: 'none',
-  },
-  addButton: {
-    backgroundColor: '#3b82f6',
-    color: 'white',
-    padding: '0.5rem 1rem',
-    borderRadius: '0.5rem',
-    border: 'none',
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.5rem',
-    transition: 'background-color 0.2s',
-  },
-  notesGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
-    gap: '1rem',
-  },
-  note: {
-    padding: '1rem',
-    borderRadius: '0.5rem',
-    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-    position: 'relative',
-    minHeight: '200px',
-    transition: 'transform 0.2s, box-shadow 0.2s',
-  },
-  deleteButton: {
-    position: 'absolute',
-    top: '0.5rem',
-    right: '0.5rem',
-    padding: '0.25rem',
-    borderRadius: '9999px',
-    border: 'none',
-    backgroundColor: 'transparent',
-    cursor: 'pointer',
-    opacity: 0,
-    transition: 'opacity 0.2s, background-color 0.2s',
-  },
-  noteContent: {
-    whiteSpace: 'pre-wrap',
-    wordBreak: 'break-word',
-  },
-  emptyState: {
-    textAlign: 'center',
-    color: '#6b7280',
-    marginTop: '2rem',
-  },
-} as { [key: string]: CSSProperties };
-
 export const App = () => {
-  const [notes, setNotes] = useState<Note[]>([]);
+  const [notes, setNotes] = useState<NoteModel[]>([]);
   const [newNoteContent, setNewNoteContent] = useState('');
   const colorNames = ['yellow', 'green', 'blue', 'pink', 'purple'];
 
   useEffect(() => {
     const fetchNotes = async () => {
-      try {
-        const response = await fetch(API_URL);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        setNotes(data);
-      } catch (err) {
-        console.error('Error fetching notes:', err);
-      }
+      // try {
+      //   const response = await fetch(API_URL);
+      //   if (!response.ok) {
+      //     throw new Error(`HTTP error! status: ${response.status}`);
+      //   }
+      //   const data = await response.json();
+      //   setNotes(data);
+      // } catch (err) {
+      //   console.error('Error fetching notes:', err);
+      // }
     };
 
     fetchNotes();
@@ -119,29 +29,30 @@ export const App = () => {
 
   const addNote = async () => {
     if (newNoteContent.trim()) {
-      const newNote: Partial<Note> = {
+      const newNote: Partial<NoteModel> = {
         content: newNoteContent,
         color: colorNames[Math.floor(Math.random() * colorNames.length)],
       };
-      try {
-        const response = await fetch(API_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(newNote),
-        });
+      // try {
+      //   const response = await fetch(API_URL, {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //     body: JSON.stringify(newNote),
+      //   });
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+      //   if (!response.ok) {
+      //     throw new Error(`HTTP error! status: ${response.status}`);
+      //   }
 
-        const createdNote: Note = await response.json();
-        setNotes([...notes, createdNote]);
-        setNewNoteContent('');
-      } catch (err) {
-        console.error('Error creating note:', err);
-      }
+      //   const createdNote: NoteModel = await response.json();
+      //   setNotes([...notes, createdNote]);
+      //   setNewNoteContent('');
+      // } catch (err) {
+      //   console.error('Error creating note:', err);
+      // }
+      setNotes([...notes, { id: notes.length, ...(newNote as NoteModel) }]);
     }
   };
 
@@ -186,42 +97,7 @@ export const App = () => {
 
         <div style={styles.notesGrid}>
           {notes.map((note) => (
-            <div
-              key={note.id}
-              style={{
-                ...styles.note,
-                backgroundColor: colors[note.color as keyof typeof colors],
-              }}
-              onMouseOver={(e) => {
-                e.currentTarget.style.transform = 'translateY(-4px)';
-                e.currentTarget.style.boxShadow =
-                  '0 6px 8px rgba(0, 0, 0, 0.15)';
-                const deleteButton = e.currentTarget.querySelector('button');
-                if (deleteButton) {
-                  deleteButton.style.opacity = '1';
-                  deleteButton.style.backgroundColor =
-                    'rgba(255, 255, 255, 0.5)';
-                }
-              }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.transform = 'none';
-                e.currentTarget.style.boxShadow =
-                  '0 4px 6px rgba(0, 0, 0, 0.1)';
-                const deleteButton = e.currentTarget.querySelector('button');
-                if (deleteButton) {
-                  deleteButton.style.opacity = '0';
-                  deleteButton.style.backgroundColor = 'transparent';
-                }
-              }}
-            >
-              <button
-                onClick={() => deleteNote(note.id)}
-                style={styles.deleteButton}
-              >
-                <X size={20} />
-              </button>
-              <p style={styles.noteContent}>{note.content}</p>
-            </div>
+            <Note key={note.id} note={note} onDelete={deleteNote} />
           ))}
         </div>
 

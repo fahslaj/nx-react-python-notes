@@ -1,8 +1,11 @@
 from flask import Flask, jsonify, request
+from notes_data import NotesData
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "http://localhost:4200"}})
+
+notes = NotesData()
 
 notes = [
     {
@@ -22,17 +25,17 @@ notes = [
 
 @app.route("/api/notes", methods=["GET"])
 def getNotes():
-    return jsonify(notes)
+    return jsonify(notes.getNotes())
 
 @app.route("/api/notes", methods=["POST"])
 def createNote():
     data = request.get_json()
     note = {
-        "id": len(notes) + 1,
+        "id": len(notes.getNotes()) + 1,
         "title": data["title"],
         "color": data["color"]
     }
-    notes.append(note)
+    notes.addNote(note)
     return jsonify(note)
 
 if __name__ == "__main__":

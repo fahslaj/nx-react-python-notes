@@ -1,0 +1,9 @@
+{
+  "name": "note",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/note/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project note --web",
+  "targets": {}
+}
