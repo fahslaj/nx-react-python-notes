@@ -1,5 +1,7 @@
 import { Plus, X } from 'lucide-react';
-import React, { CSSProperties, useState } from 'react';
+import React, { CSSProperties, useEffect, useState } from 'react';
+
+const API_URL = 'http://localhost:4201/api/notes';
 
 interface Note {
   id: string;
@@ -98,15 +100,48 @@ export const App = () => {
   const [newNoteContent, setNewNoteContent] = useState('');
   const colorNames = ['yellow', 'green', 'blue', 'pink', 'purple'];
 
-  const addNote = () => {
+  useEffect(() => {
+    const fetchNotes = async () => {
+      try {
+        const response = await fetch(API_URL);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setNotes(data);
+      } catch (err) {
+        console.error('Error fetching notes:', err);
+      }
+    };
+
+    fetchNotes();
+  }, []);
+
+  const addNote = async () => {
     if (newNoteContent.trim()) {
-      const newNote: Note = {
-        id: crypto.randomUUID(),
+      const newNote: Partial<Note> = {
         content: newNoteContent,
         color: colorNames[Math.floor(Math.random() * colorNames.length)],
       };
-      setNotes([...notes, newNote]);
-      setNewNoteContent('');
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newNote),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const createdNote: Note = await response.json();
+        setNotes([...notes, createdNote]);
+        setNewNoteContent('');
+      } catch (err) {
+        console.error('Error creating note:', err);
+      }
     }
   };
 
