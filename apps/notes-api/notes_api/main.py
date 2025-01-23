@@ -7,9 +7,11 @@ CORS(app, resources={r"/api/*": {"origins": "http://localhost:4200"}})
 
 notes = NotesData()
 
+
 @app.route("/api/notes", methods=["GET"])
 def getNotes():
     return jsonify(notes.getNotes())
+
 
 @app.route("/api/notes", methods=["POST"])
 def createNote():
@@ -20,10 +22,12 @@ def createNote():
     }
     return jsonify(notes.addNote(note))
 
+
 @app.route("/api/notes/<int:id>", methods=["DELETE"])
 def deleteNote(id):
     notes.deleteNoteById(id)
     return jsonify({"message": "Note deleted"})
+
 
 if __name__ == "__main__":
     app.run(debug=True)
