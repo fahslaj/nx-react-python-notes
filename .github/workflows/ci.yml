@@ -18,10 +18,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - run: sudo apt-get install pipx
-      - run: pipx ensurepath
-      - run: pipx install poetry
-      - run: pipx install flask
+      - run: curl -sSL https://install.python-poetry.org | python3 - --version 1.8.3
 
       # This enables task distribution via Nx Cloud
       # Run this command as early as possible, before dependencies are installed
