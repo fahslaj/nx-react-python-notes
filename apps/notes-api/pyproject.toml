@@ -29,14 +29,6 @@ readme = "README.md"
     path = "../../libs/notes-data"
     develop = true
 
-    [tool.poetry.dev-dependencies]
-    autopep8 = "2.3.1"
-    flake8 = "7.1.1"
-    pytest = "8.3.4"
-    pytest-sugar = "1.0.0"
-    pytest-cov = "6.0.0"
-    pytest-html = "4.1.1"
-
 [build-system]
 requires = [ "poetry-core" ]
 build-backend = "poetry.core.masonry.api"
