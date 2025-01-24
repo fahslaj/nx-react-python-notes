@@ -28,6 +28,8 @@ jobs:
           python-version-file: 'pyproject.toml'
           cache: 'poetry'
 
+      - run: poetry install
+
       # This enables task distribution via Nx Cloud
       # Run this command as early as possible, before dependencies are installed
       # Learn more at https://nx.dev/ci/reference/nx-cloud-cli#npx-nxcloud-startcirun
