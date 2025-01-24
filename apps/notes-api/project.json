@@ -69,7 +69,8 @@
         "command": "poetry run pytest tests/",
         "cwd": "apps/notes-api"
       },
-      "cache": true
+      "cache": true,
+      "dependsOn": ["install"]
     }
   },
   "tags": [],

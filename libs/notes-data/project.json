@@ -62,7 +62,8 @@
         "command": "poetry run pytest tests/",
         "cwd": "libs/notes-data"
       },
-      "cache": true
+      "cache": true,
+      "dependsOn": ["install"]
     }
   },
   "tags": [],
